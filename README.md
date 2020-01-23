@@ -1,3 +1,6 @@
+[![Coverage Status](https://coveralls.io/repos/github/victorolinasc/ex-stone-openbank/badge.svg?branch=master)](https://coveralls.io/github/victorolinasc/ex-stone-openbank?branch=master)
+[![CircleCI](https://circleci.com/gh/victorolinasc/ex-stone-openbank.svg?style=svg)](https://circleci.com/gh/victorolinasc/ex-stone-openbank)
+
 # ExStoneOpenbank
 
 A library that connects with Stone Open Banking API.
