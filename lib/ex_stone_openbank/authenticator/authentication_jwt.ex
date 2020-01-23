@@ -4,11 +4,10 @@ defmodule ExStoneOpenbank.Authenticator.AuthenticationJWT do
   """
   use Joken.Config
 
-  alias ExStoneOpenbank.Config
-
   @impl true
   def token_config do
-    default_claims(skip: [:iss, :aud])
+    [skip: [:iss, :aud]]
+    |> default_claims()
     |> add_claim("realm", fn -> "stone_bank" end)
   end
 end

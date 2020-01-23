@@ -9,15 +9,15 @@ defmodule ExStoneOpenbank.API.Model.Statement do
     :amount,
     :balance_after,
     :balance_before,
-    :id,
-    :operation,
-    :status,
     :created_at,
-    :type
+    :id,
+    :status
   ]
 
   @optional [
-    :description
+    :operation,
+    :description,
+    :type
   ]
 
   embedded_schema do

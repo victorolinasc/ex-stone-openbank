@@ -23,7 +23,9 @@ defmodule ExStoneOpenbank.Config do
     config
   end
 
-  defp validate(:name, name) when not is_nil(name) and is_atom(name), do: {:name, name}
+  defp validate(:name, name) when is_atom(name) and not is_nil(name) and not is_boolean(name),
+    do: {:name, name}
+
   defp validate(:name, _), do: raise("Name must be an atom")
 
   defp validate(:client_id, client_id) when is_binary(client_id), do: {:client_id, client_id}
@@ -31,20 +33,40 @@ defmodule ExStoneOpenbank.Config do
 
   defp validate(:sandbox?, nil), do: {:sandbox?, false}
   defp validate(:sandbox?, value) when is_boolean(value), do: {:sandbox?, value}
-  defp validate(:sandbox?, _), do: raise("`:sandbox?` must be a boolean")
+  defp validate(:sandbox?, _), do: raise("`:sandbox?` must be a boolean or nil")
 
   defp validate(:private_key, private_key) when not is_binary(private_key),
-    do: raise("Client ID is mandatory and must be a string")
+    do: raise("Private key must be a String with a PEM encoded RSA private key")
 
   # we change the key name here
   defp validate(:private_key, private_key) do
-    {:signer, Joken.Signer.create("RS256", %{"pem" => private_key})}
+    unless String.contains?(private_key, "-----BEGIN PRIVATE KEY-----") and
+             String.contains?(private_key, "-----END PRIVATE KEY-----") do
+      raise "Invalid PEM string passed as private_key"
+    end
+
+    case :public_key.pem_decode(private_key) do
+      [] ->
+        raise "Invalid PEM string passed as private_key"
+
+      pem_entries when is_list(pem_entries) ->
+        try do
+          {:signer, Joken.Signer.create("RS256", %{"pem" => private_key})}
+        rescue
+          err ->
+            error = Exception.format(:error, err)
+            raise("Bad private key. Threw error: \n#{error}")
+        end
+    end
   end
 
   defp validate(:consent_redirect_url, value) when is_binary(value) do
     case URI.parse(value) do
-      %URI{} = uri -> {:consent_redirect_url, uri}
-      _ -> raise("Invalid consent_redirect_url")
+      %URI{scheme: scheme, host: host} = uri when not is_nil(scheme) and not is_nil(host) ->
+        {:consent_redirect_url, uri}
+
+      _ ->
+        raise("Invalid consent_redirect_url")
     end
   end
 
@@ -117,20 +139,4 @@ defmodule ExStoneOpenbank.Config do
   """
   @spec options(config_name :: atom()) :: Keyword.t()
   def options(name), do: :persistent_term.get({__MODULE__, name})
-
-  defp validate_behaviour(module, key, behaviour) when not is_atom(module) do
-    raise """
-    #{key} configuration must be either:
-      - false (disables the handler. This is the same as not specifying a handler. Useful for per
-    environment settings)
-      - a module that uses `#{behaviour}`
-    """
-  end
-
-  defp validate_behaviour(module, _key, behaviour) do
-    :attributes
-    |> module.__info__()
-    |> Keyword.get(:behaviour, [])
-    |> Enum.member?(behaviour)
-  end
 end

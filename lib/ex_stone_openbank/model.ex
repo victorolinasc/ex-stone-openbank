@@ -1,7 +1,5 @@
 defmodule ExStoneOpenbank.Model do
-  @moduledoc """
-  Base model
-  """
+  @moduledoc false
 
   @iso8601_structs [
     Date,

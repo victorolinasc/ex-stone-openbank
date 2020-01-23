@@ -16,7 +16,7 @@ defmodule ExStoneOpenbank.Authenticator do
 
   # milliseconds to avoid re-fetching the token in case another process tried to request it before
   # the login finished
-  @skew_time 2_000
+  @skew_time Application.get_env(:ex_stone_openbank, :time_skew, 2_000)
 
   def start_link(opts),
     do: GenServer.start_link(__MODULE__, opts, name: Keyword.fetch!(opts, :name))
@@ -32,10 +32,8 @@ defmodule ExStoneOpenbank.Authenticator do
 
   @impl true
   def handle_continue(:authenticate, %{name: name} = state) do
-    tokens = authenticate(name)
-    :ets.insert(name, {:tokens, tokens})
-
-    {:noreply, Map.put(state, :last_timestamp, :erlang.system_time())}
+    {:ok, _tokens} = authenticate(name)
+    {:noreply, Map.put(state, :last_timestamp, new_timestamp())}
   end
 
   @impl true
@@ -45,8 +43,7 @@ defmodule ExStoneOpenbank.Authenticator do
         %{last_timestamp: last_timestamp, name: name} = state
       )
       when last_timestamp + @skew_time > timestamp do
-    [tokens: tokens] = :ets.lookup(name, :tokens)
-    {:reply, tokens, state}
+    {:reply, tokens(name), state}
   end
 
   def handle_call(
@@ -59,15 +56,34 @@ defmodule ExStoneOpenbank.Authenticator do
       )
       when is_nil(last_timestamp) or last_timestamp + @skew_time <= timestamp do
     with {:ok, tokens} <- authenticate(name) do
-      :ets.insert(name, {:tokens, tokens})
-      {:reply, tokens[:access_token], %{state | last_timestamp: :erlang.system_time()}}
+      state = %{state | last_timestamp: new_timestamp()}
+      {:reply, tokens, state}
     else
       err -> {:reply, err, state}
     end
   end
 
+  def handle_call(:last_timestamp, _, %{last_timestamp: ts} = state) do
+    {:reply, ts, state}
+  end
+
   @impl true
   def handle_info(_msg, state), do: {:noreply, state}
+
+  @doc false
+  def tokens(name), do: :ets.lookup(name, :tokens)[:tokens]
+
+  defp last_timestamp(name), do: GenServer.call(name, :last_timestamp)
+
+  defp new_timestamp, do: :erlang.system_time(:millisecond)
+
+  @doc false
+  def time_until_next_refresh(config_name) do
+    ts = last_timestamp(config_name) + time_skew()
+    now = new_timestamp()
+
+    if now <= ts, do: ts - now, else: 0
+  end
 
   @doc """
   Gets the access_token for the given configuration.
@@ -85,7 +101,7 @@ defmodule ExStoneOpenbank.Authenticator do
   """
   @spec refresh_token(name :: atom()) :: {:ok, String.t()}
   def refresh_token(name) do
-    GenServer.call(name, {:refresh_token, :erlang.system_time()})
+    GenServer.call(name, {:refresh_token, new_timestamp()})
   end
 
   @doc """
@@ -96,29 +112,40 @@ defmodule ExStoneOpenbank.Authenticator do
           | {:error, reason :: atom()}
   def authenticate(name) do
     with opts <- Config.options(name),
-         {:ok, token, _claims} <-
-           AuthenticationJWT.generate_and_sign(
-             %{
-               "clientId" => opts.client_id,
-               "sub" => opts.client_id,
-               "aud" => Config.accounts_url(name) <> "/auth/realms/stone_bank"
-             },
-             opts.signer
-           ),
+         {:ok, token, _claims} <- generate_client_credentials_token(name, opts),
          {:ok, %{"access_token" => access, "refresh_token" => refresh}} <-
-           HTTP.login_client()
-           |> Tesla.post(
-             "#{Config.accounts_url(name)}/auth/realms/stone_bank/protocol/openid-connect/token",
-             %{
-               "grant_type" => "client_credentials",
-               "client_id" => opts.client_id,
-               "client_assertion_type" =>
-                 "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-               "client_assertion" => token
-             }
-           )
-           |> HTTP.parse_result() do
-      %{access_token: access, refresh_token: refresh}
+           do_login(name, opts, token) do
+      tokens = %{access_token: access, refresh_token: refresh}
+      :ets.insert(name, {:tokens, tokens})
+      {:ok, tokens}
     end
   end
+
+  defp generate_client_credentials_token(name, opts) do
+    AuthenticationJWT.generate_and_sign(
+      %{
+        "clientId" => opts.client_id,
+        "sub" => opts.client_id,
+        "aud" => Config.accounts_url(name) <> "/auth/realms/stone_bank"
+      },
+      opts.signer
+    )
+  end
+
+  defp do_login(name, opts, token) do
+    HTTP.login_client()
+    |> Tesla.post(
+      "#{Config.accounts_url(name)}/auth/realms/stone_bank/protocol/openid-connect/token",
+      %{
+        "grant_type" => "client_credentials",
+        "client_id" => opts.client_id,
+        "client_assertion_type" => "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+        "client_assertion" => token
+      }
+    )
+    |> HTTP.parse_result()
+  end
+
+  @doc false
+  def time_skew, do: @skew_time
 end

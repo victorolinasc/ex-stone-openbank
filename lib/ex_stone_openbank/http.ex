@@ -1,7 +1,5 @@
 defmodule ExStoneOpenbank.HTTP do
-  @moduledoc """
-  The HTTP client used to make
-  """
+  @moduledoc false
   require Logger
 
   alias ExStoneOpenbank.Authenticator.AuthHTTPMiddleware

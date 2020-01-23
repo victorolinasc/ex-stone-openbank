@@ -24,9 +24,8 @@ defmodule ExStoneOpenbank.Authenticator.AuthHTTPMiddleware do
   end
 
   defp do_call(attempt, env, stack, config_name) when attempt < 5 do
-    {:ok, access_token} = Authenticator.access_token(config_name)
-
-    with result <-
+    with {:ok, access_token} <- Authenticator.access_token(config_name),
+         result <-
            Tesla.run(
              %{env | headers: [{"Authorization", "Bearer #{access_token}"} | env.headers]},
              stack
@@ -35,6 +34,10 @@ defmodule ExStoneOpenbank.Authenticator.AuthHTTPMiddleware do
       |> HTTP.parse_result()
       |> case do
         {:error, :unauthenticated} ->
+          millis = Authenticator.time_until_next_refresh(config_name)
+
+          if millis > 0, do: :timer.sleep(millis)
+
           Authenticator.refresh_token(config_name)
           do_call(attempt + 1, env, stack, config_name)
 

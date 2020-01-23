@@ -8,7 +8,7 @@ defmodule ExStoneOpenbank.API.Payments do
     BarcodePaymentResponse
   }
 
-  alias ExStoneOpenbank.{Cursor, HTTP, Model, Page}
+  alias ExStoneOpenbank.{HTTP, Model}
 
   @doc """
   Dry run the payment of a barcode.

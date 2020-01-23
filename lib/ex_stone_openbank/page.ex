@@ -23,6 +23,9 @@ defmodule ExStoneOpenbank.Page do
     %{page | data: Enum.map(page.data, &model.cast_and_apply(&1))}
   end
 
+  def has_next?(page), do: not is_nil(page.cursor.after)
+  def has_before(page), do: not is_nil(page.cursor.before)
+
   def first(function), do: call_and_wrap_function(:first, %Cursor{}, function)
 
   def next(page) do
