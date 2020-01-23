@@ -12,6 +12,6 @@ jobs:
       - run: mix deps.get
       - run: mix test --trace --cover
       - store_test_results:
-          path: /tmp/junit-reports
+          path: ~/repo/ex-stone-openbank/_build/test/lib/ex_stone_openbank/test-junit-report.xml
       # - store_artifacts:
       #     path: /tmp/excoveralls
