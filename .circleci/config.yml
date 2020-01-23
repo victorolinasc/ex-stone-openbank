@@ -9,9 +9,24 @@ jobs:
       - checkout
       - run: mix local.hex --force
       - run: mix local.rebar --force
+      - restore_cache:
+          keys:
+            - v1-dependency-cache-{{ checksum "mix.lock" }}
+            - v1-dependency-cache
+      - restore_cache:
+          keys:
+            - v1-build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - v1-build-cache-{{ .Branch }}
+            - v1-build-cache
       - run: mix deps.get
+      - save_cache:
+          key: v1-dependency-cache-{{ checksum "mix.lock" }}
+          paths: deps
       - run: mix test --trace --cover
+      - save_cache:
+          key: v1-build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths: _build
       - store_test_results:
-          path: ~/repo/ex-stone-openbank/_build/test/lib/ex_stone_openbank/test-junit-report.xml
+          path: _build/test/lib/ex_stone_openbank/test-junit-report.xml
       # - store_artifacts:
       #     path: /tmp/excoveralls
