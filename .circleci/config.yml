@@ -22,7 +22,7 @@ jobs:
       - save_cache:
           key: v1-dependency-cache-{{ checksum "mix.lock" }}
           paths: deps
-      - run: mix coveralls.circle --trace 
+      - run: MIX_ENV=test mix coveralls.circle --trace 
       - save_cache:
           key: v1-build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
           paths: _build
