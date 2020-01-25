@@ -3,9 +3,14 @@ defmodule ExStoneOpenbank.API.PaymentAccounts do
   Retrieves all resources the application has access to.
   """
 
-  alias ExStoneOpenbank.API.Model.{PaymentAccount, Statement}
+  alias ExStoneOpenbank.API.Model.{PaymentAccount, StatementEntry}
   alias ExStoneOpenbank.{Cursor, HTTP, Page}
 
+  @doc """
+  List all accounts which the current token can access.
+  """
+  @spec list(config_name :: atom(), opts :: Keyword.t()) ::
+          {:ok, Page.t()} | {:error, HTTP.error_reason()}
   def list(name, opts \\ []) do
     Page.first(
       &HTTP.get(name, "/accounts?paginate=true", Cursor.parse_opts(&1, &2, opts),
@@ -14,13 +19,21 @@ defmodule ExStoneOpenbank.API.PaymentAccounts do
     )
   end
 
-  def list_statements(name, account_id, opts \\ []) do
+  @doc """
+  Get the given account's statement as a paginated list.
+  """
+  @spec get_statement(
+          config_name :: atom(),
+          account_id :: String.t(),
+          opts :: Keyword.t()
+        ) :: {:ok, Page.t()} | {:error, HTTP.error_reason()}
+  def get_statement(name, account_id, opts \\ []) do
     Page.first(
       &HTTP.get(
         name,
         "/accounts/#{account_id}/statement?paginate=true",
         Cursor.parse_opts(&1, &2, opts),
-        model: Statement
+        model: StatementEntry
       )
     )
   end

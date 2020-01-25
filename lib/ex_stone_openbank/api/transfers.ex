@@ -10,14 +10,14 @@ defmodule ExStoneOpenbank.API.Transfers do
 
   This is needed in order to understand the details of the payment and show it up front to users.
   """
-  @spec dry_run_transfer(config_name :: atom(), input :: map()) ::
+  @spec dry_run_transfer(config_name :: atom(), input :: TransferInput.t()) ::
           {:ok, TransferResponse.t()} | {:error, reason :: atom()}
   def dry_run_transfer(config_name, input), do: perform(config_name, input, true)
 
   @doc """
   Make transfer
   """
-  @spec transfer(config_name :: atom(), input :: map()) ::
+  @spec transfer(config_name :: atom(), input :: TransferInput.t()) ::
           {:ok, TransferResponse.t()} | {:error, reason :: atom()}
   def transfer(config_name, input), do: perform(config_name, input, false)
 

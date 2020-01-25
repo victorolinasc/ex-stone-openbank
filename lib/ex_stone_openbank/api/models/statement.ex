@@ -1,6 +1,6 @@
-defmodule ExStoneOpenbank.API.Model.Statement do
+defmodule ExStoneOpenbank.API.Model.StatementEntry do
   @moduledoc """
-  Statement model
+  StatementEntry model
   """
   use ExStoneOpenbank.Model
   alias ExStoneOpenbank.API.Model.CounterParty
