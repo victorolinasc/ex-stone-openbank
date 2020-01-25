@@ -1,6 +1,6 @@
 defmodule ExStoneOpenbank.API.Model.DryRunBarcodePaymentInput do
   @moduledoc """
-  Dry Run input for a barcode payment.
+  Input for a barcode payment dry run.
   """
   use ExStoneOpenbank.Model
 

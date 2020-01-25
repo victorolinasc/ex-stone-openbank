@@ -9,7 +9,8 @@ defmodule ExStoneOpenbank.API.PaymentAccounts do
   @doc """
   List all accounts which the current token can access.
   """
-  @spec list(config_name :: atom(), opts :: Keyword.t()) :: Page.t()
+  @spec list(config_name :: atom(), opts :: Keyword.t()) ::
+          {:ok, Page.t()} | {:error, HTTP.error_reason()}
   def list(name, opts \\ []) do
     Page.first(
       &HTTP.get(name, "/accounts?paginate=true", Cursor.parse_opts(&1, &2, opts),
@@ -25,7 +26,7 @@ defmodule ExStoneOpenbank.API.PaymentAccounts do
           config_name :: atom(),
           account_id :: String.t(),
           opts :: Keyword.t()
-        ) :: Page.t()
+        ) :: {:ok, Page.t()} | {:error, HTTP.error_reason()}
   def get_statement(name, account_id, opts \\ []) do
     Page.first(
       &HTTP.get(
