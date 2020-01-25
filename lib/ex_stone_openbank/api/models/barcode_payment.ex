@@ -1,6 +1,6 @@
 defmodule ExStoneOpenbank.API.Model.BarcodePaymentResponse do
   @moduledoc """
-  Response of a successful barcode payment (or dry_run)
+  Response of a successful barcode payment (or dry-run)
   """
   use ExStoneOpenbank.Model
   alias ExStoneOpenbank.API.Model.BarcodePaymentDetails

@@ -44,7 +44,7 @@ defmodule ExStoneOpenbank do
 
         def start(_type, _args) do
           children = [
-            # important JWKS for webhooks! It only uses the sandbox? key from the config.
+            # important JWKS for webhooks! It only uses the :sandbox? key from the config.
             {ExStoneOpenbank.Webhooks.StoneJWKS, stone_bank()},
             # Your application authenticator
             {ExStoneOpenbank.Authenticator, stone_bank()},
@@ -91,7 +91,7 @@ defmodule ExStoneOpenbank do
   All APIs expect the config name as the first parameter. This is so to make it possible to have
   more than one Stone application, each with its own authenticator.
 
-  ## Cursor based pagination endpoints
+  ## Cursor-based pagination endpoints
 
   We use cursor-based pagination for list endpoints. Therefore, all endpoints that return a
   `ExStoneOpenbank.Page` will have:

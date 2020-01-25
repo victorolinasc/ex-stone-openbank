@@ -1,6 +1,6 @@
 defmodule ExStoneOpenbank.Page do
   @moduledoc """
-  A page on any cursor based paginated API.
+  A page on any cursor-based paginated API.
   """
   use ExStoneOpenbank.Model
   alias ExStoneOpenbank.Cursor
