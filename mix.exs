@@ -1,15 +1,23 @@
 defmodule ExStoneOpenbank.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+  @description "Stone Openbank APIs Elixir SDK"
+  @github_link "https://github.com/victorolinasc/ex-stone-openbank"
+
   def project do
     [
       app: :ex_stone_openbank,
-      version: "0.1.0",
+      name: "ExStoneOpenbank",
+      version: @version,
+      description: @description,
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       docs: docs(),
+      source_url: @github_link,
+      package: package(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
@@ -20,11 +28,7 @@ defmodule ExStoneOpenbank.MixProject do
     ]
   end
 
-  def application do
-    [
-      extra_applications: [:logger]
-    ]
-  end
+  def application, do: [extra_applications: [:logger]]
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
@@ -53,6 +57,8 @@ defmodule ExStoneOpenbank.MixProject do
     [
       main: "ExStoneOpenbank",
       extras: ["README.md", "CHANGELOG.md"],
+      source_ref: "v#{@version}",
+      source_url: @github_link,
       groups_for_modules: [
         "API Model": ~r/ExStoneOpenbank\.API\.Model*/,
         API: ~r/ExStoneOpenbank\.API.*/,
@@ -67,6 +73,14 @@ defmodule ExStoneOpenbank.MixProject do
         ExStoneOpenbank.Consents,
         ExStoneOpenbank.Authenticator
       ]
+    ]
+  end
+
+  defp package do
+    [
+      maintainers: ["Victor Oliveira Nascimento"],
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => @github_link}
     ]
   end
 end
