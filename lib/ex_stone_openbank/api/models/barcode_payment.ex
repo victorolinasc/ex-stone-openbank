@@ -52,7 +52,7 @@ defmodule ExStoneOpenbank.API.Model.BarcodePaymentResponse do
     field :refunded_at, :naive_datetime
     field :rejected_at, :naive_datetime
     field :rejected_by, :string
-    field :scheduled_to, :naive_datetime
+    field :scheduled_to, :date
     field :status, :string
     field :writable_line, :string
 

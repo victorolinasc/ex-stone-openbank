@@ -11,7 +11,7 @@ defmodule ExStoneOpenbank.API.Model.BarcodePaymentInput do
   embedded_schema do
     field :barcode, :string
     field :account_id, :string
-    field :scheduled_to, :naive_datetime
+    field :scheduled_to, :date
   end
 
   @doc false

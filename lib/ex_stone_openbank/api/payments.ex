@@ -16,7 +16,7 @@ defmodule ExStoneOpenbank.API.Payments do
   This is needed in order to understand the details of the payment and show it up front to users.
   """
   @spec dry_run_pay_barcode(config_name :: atom(), input :: map()) ::
-          {:ok, DryRunBarcodePaymentResponse.t()} | {:error, reason :: atom()}
+          {:ok, BarcodePaymentResponse.t()} | {:error, reason :: atom()}
   def dry_run_pay_barcode(config_name, input) do
     case DryRunBarcodePaymentInput.cast_and_apply(input) do
       %DryRunBarcodePaymentInput{} = input ->
@@ -32,7 +32,7 @@ defmodule ExStoneOpenbank.API.Payments do
   Pay a barcode.
   """
   @spec pay_barcode(config_name :: atom(), input :: map()) ::
-          {:ok, DryRunBarcodePaymentResponse.t()} | {:error, reason :: atom()}
+          {:ok, BarcodePaymentResponse.t()} | {:error, reason :: atom()}
   def pay_barcode(config_name, input) do
     case BarcodePaymentInput.cast_and_apply(input) do
       %BarcodePaymentInput{} = input ->
