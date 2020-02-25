@@ -1,7 +1,7 @@
 defmodule ExStoneOpenbank.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.1"
   @description "Stone Openbank APIs Elixir SDK"
   @github_link "https://github.com/victorolinasc/ex-stone-openbank"
 
