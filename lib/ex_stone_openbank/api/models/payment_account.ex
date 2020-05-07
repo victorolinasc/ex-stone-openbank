@@ -11,7 +11,6 @@ defmodule ExStoneOpenbank.API.Model.PaymentAccount do
     :owner_document,
     :owner_id,
     :owner_name,
-    :restricted_features,
     :status
   ]
 
