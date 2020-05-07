@@ -1,7 +1,7 @@
 defmodule ExStoneOpenbank.MixProject do
   use Mix.Project
 
-  @version "0.1.1"
+  @version "0.1.2"
   @description "Stone Openbank APIs Elixir SDK"
   @github_link "https://github.com/victorolinasc/ex-stone-openbank"
 
@@ -41,11 +41,11 @@ defmodule ExStoneOpenbank.MixProject do
       {:hackney, "~> 1.15"},
       {:joken, "~> 2.2"},
       {:joken_jwks, "~> 1.1"},
-      {:ecto, "~> 3.3.0"},
+      {:ecto, "~> 3.4"},
       {:telemetry, "~> 0.4"},
 
       # Test, dev only deps
-      {:credo, "~> 1.1.5", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
       {:junit_formatter, "~> 3.0", only: :test},
       {:mox, "~> 0.5", only: :test},
