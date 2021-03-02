@@ -49,6 +49,6 @@ defmodule ExStoneOpenbank.Consents do
 
     link = config_name |> Config.accounts_url() |> URI.parse()
 
-    %{link | query: query, path: "/#/consent"} |> URI.to_string()
+    %{link | query: query, path: "/consentimento"} |> URI.to_string()
   end
 end
