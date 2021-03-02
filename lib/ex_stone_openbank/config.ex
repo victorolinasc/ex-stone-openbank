@@ -84,9 +84,9 @@ defmodule ExStoneOpenbank.Config do
   @spec accounts_url(config_name :: atom()) :: String.t()
   def accounts_url(name) when is_atom(name) do
     if sandbox?(name) do
-      "https://sandbox-accounts.openbank.stone.com.br"
+      "https://sandbox.conta.stone.com.br"
     else
-      "https://accounts.openbank.stone.com.br"
+      "https://conta.stone.com.br"
     end
   end
 
