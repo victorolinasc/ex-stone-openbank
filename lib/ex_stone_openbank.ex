@@ -105,7 +105,7 @@ defmodule ExStoneOpenbank do
   Here is an example:
 
       account_id = # some id
-      {:ok, page} = ExStoneOpenbank.API.PaymentAccounts.list_statements(:my_app, account_id, limit: 50)
+      {:ok, page} = ExStoneOpenbank.API.PaymentAccounts.get_statement(:my_app, account_id, limit: 50)
       page.data # => items
 
       # Suppose there are enought items for paginating (if not the response is {:error, :no_more_pages})
