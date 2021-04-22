@@ -40,8 +40,8 @@ defmodule ExStoneOpenbank.Config do
 
   # we change the key name here
   defp validate(:private_key, private_key) do
-    unless String.contains?(private_key, "-----BEGIN PRIVATE KEY-----") and
-             String.contains?(private_key, "-----END PRIVATE KEY-----") do
+    unless String.contains?(private_key, "-----BEGIN RSA PRIVATE KEY-----") and
+             String.contains?(private_key, "-----END RSA PRIVATE KEY-----") do
       raise "Invalid PEM string passed as private_key"
     end
 
