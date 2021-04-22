@@ -4,10 +4,11 @@ defmodule ExStoneOpenbank.API.Model.Entity do
   """
   use ExStoneOpenbank.Model
 
-  @fields [:name]
+  @fields [:name, :document]
 
   embedded_schema do
     field :name, :string
+    field :document, :string
   end
 
   @doc false
