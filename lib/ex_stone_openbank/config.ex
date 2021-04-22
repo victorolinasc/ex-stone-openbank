@@ -60,6 +60,8 @@ defmodule ExStoneOpenbank.Config do
     end
   end
 
+  defp validate(:consent_redirect_url, nil), do: {:consent_redirect_url, nil}
+
   defp validate(:consent_redirect_url, value) when is_binary(value) do
     case URI.parse(value) do
       %URI{scheme: scheme, host: host} = uri when not is_nil(scheme) and not is_nil(host) ->
