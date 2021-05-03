@@ -3,9 +3,9 @@ defmodule ExStoneOpenbank.API.Payments do
   Payments calls
   """
   alias ExStoneOpenbank.API.Model.{
-    DryRunBarcodePaymentInput,
     BarcodePaymentInput,
-    BarcodePaymentResponse
+    BarcodePaymentResponse,
+    DryRunBarcodePaymentInput
   }
 
   alias ExStoneOpenbank.{HTTP, Model}

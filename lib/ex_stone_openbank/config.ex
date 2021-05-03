@@ -55,7 +55,7 @@ defmodule ExStoneOpenbank.Config do
         rescue
           err ->
             error = Exception.format(:error, err)
-            raise("Bad private key. Threw error: \n#{error}")
+            reraise("Bad private key. Threw error: \n#{error}", __STACKTRACE__)
         end
     end
   end
