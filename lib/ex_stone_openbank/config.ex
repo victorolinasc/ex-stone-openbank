@@ -40,24 +40,7 @@ defmodule ExStoneOpenbank.Config do
 
   # we change the key name here
   defp validate(:private_key, private_key) do
-    unless String.contains?(private_key, "-----BEGIN RSA PRIVATE KEY-----") and
-             String.contains?(private_key, "-----END RSA PRIVATE KEY-----") do
-      raise "Invalid PEM string passed as private_key"
-    end
-
-    case :public_key.pem_decode(private_key) do
-      [] ->
-        raise "Invalid PEM string passed as private_key"
-
-      pem_entries when is_list(pem_entries) ->
-        try do
-          {:signer, Joken.Signer.create("RS256", %{"pem" => private_key})}
-        rescue
-          err ->
-            error = Exception.format(:error, err)
-            reraise("Bad private key. Threw error: \n#{error}", __STACKTRACE__)
-        end
-    end
+    {:signer, Joken.Signer.create("RS256", %{"pem" => private_key})}
   end
 
   defp validate(:consent_redirect_url, nil), do: {:consent_redirect_url, nil}
