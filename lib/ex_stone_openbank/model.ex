@@ -34,7 +34,7 @@ defmodule ExStoneOpenbank.Model do
         Ecto.Changeset.apply_changes(cs)
 
       changeset ->
-        {:errors, IO.inspect(changeset).errors}
+        {:errors, changeset.errors}
     end
   end
 

@@ -63,7 +63,7 @@ defmodule ExStoneOpenbank.ConfigTest do
       end
 
       assert_raise RuntimeError, message, fn ->
-        Config.validate_and_persist([{:private_key, 12345} | opts])
+        Config.validate_and_persist([{:private_key, 12_345} | opts])
       end
 
       assert_raise RuntimeError, "Invalid PEM string passed as private_key", fn ->
@@ -96,7 +96,7 @@ defmodule ExStoneOpenbank.ConfigTest do
       end
 
       assert_raise RuntimeError, message, fn ->
-        Config.validate_and_persist([{:consent_redirect_url, 12345} | opts])
+        Config.validate_and_persist([{:consent_redirect_url, 12_345} | opts])
       end
 
       assert_raise RuntimeError, "Invalid consent_redirect_url", fn ->

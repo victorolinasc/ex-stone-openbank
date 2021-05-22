@@ -40,25 +40,10 @@ defmodule ExStoneOpenbank.Config do
 
   # we change the key name here
   defp validate(:private_key, private_key) do
-    unless String.contains?(private_key, "-----BEGIN PRIVATE KEY-----") and
-             String.contains?(private_key, "-----END PRIVATE KEY-----") do
-      raise "Invalid PEM string passed as private_key"
-    end
-
-    case :public_key.pem_decode(private_key) do
-      [] ->
-        raise "Invalid PEM string passed as private_key"
-
-      pem_entries when is_list(pem_entries) ->
-        try do
-          {:signer, Joken.Signer.create("RS256", %{"pem" => private_key})}
-        rescue
-          err ->
-            error = Exception.format(:error, err)
-            raise("Bad private key. Threw error: \n#{error}")
-        end
-    end
+    {:signer, Joken.Signer.create("RS256", %{"pem" => private_key})}
   end
+
+  defp validate(:consent_redirect_url, nil), do: {:consent_redirect_url, nil}
 
   defp validate(:consent_redirect_url, value) when is_binary(value) do
     case URI.parse(value) do
@@ -84,9 +69,9 @@ defmodule ExStoneOpenbank.Config do
   @spec accounts_url(config_name :: atom()) :: String.t()
   def accounts_url(name) when is_atom(name) do
     if sandbox?(name) do
-      "https://sandbox.conta.stone.com.br"
+      "https://sandbox-accounts.openbank.stone.com.br"
     else
-      "https://conta.stone.com.br"
+      "https://accounts.openbank.stone.com.br/"
     end
   end
 

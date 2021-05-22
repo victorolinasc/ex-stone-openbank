@@ -55,11 +55,13 @@ defmodule ExStoneOpenbank.Authenticator do
         } = state
       )
       when is_nil(last_timestamp) or last_timestamp + @skew_time <= timestamp do
-    with {:ok, tokens} <- authenticate(name) do
-      state = %{state | last_timestamp: new_timestamp()}
-      {:reply, tokens, state}
-    else
-      err -> {:reply, err, state}
+    case authenticate(name) do
+      {:ok, tokens} ->
+        state = %{state | last_timestamp: new_timestamp()}
+        {:reply, tokens, state}
+
+      err ->
+        {:reply, err, state}
     end
   end
 

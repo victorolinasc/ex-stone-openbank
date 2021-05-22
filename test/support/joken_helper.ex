@@ -1,5 +1,5 @@
 defmodule ExStoneOpenbank.JokenHelper do
-  @doc false
+  @moduledoc false
 
   @pem """
   -----BEGIN PRIVATE KEY-----
