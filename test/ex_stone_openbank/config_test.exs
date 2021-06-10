@@ -65,26 +65,6 @@ defmodule ExStoneOpenbank.ConfigTest do
       assert_raise RuntimeError, message, fn ->
         Config.validate_and_persist([{:private_key, 12_345} | opts])
       end
-
-      assert_raise RuntimeError, "Invalid PEM string passed as private_key", fn ->
-        Config.validate_and_persist([{:private_key, "Not a valid PEM encoded RSA key"} | opts])
-      end
-
-      public_rsa_pem = """
-      -----BEGIN PRIVATE KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqU8qSyDQnaCOc7oBQQ5z
-      5vplJfgh+3e88XIymUhXUNbOGAkrYKXrizX4acjx82Xr0p7LCtIner2zP/zzVhxP
-      7k6EiZ6ugQ8wfakWGJXfK2EgO4HSzFBNhTYXTCZ5K72CiDi6O+XFGo7e34BzYZS1
-      u1dv6pOK7JKeLuZInZk48Vlm6dXWOPISYbCrFEjyqdFqltXMdqo9ciZ8eRUIG9lY
-      X+8B3LjI5tn1lc7Jjr6SHUTJM2OySKafKzWH7K0JaZTe9T2KoB+U2U5HXFl3CUfn
-      zoPBJJC0y19dUYRCKGmhZJLAojm4nnp+6Ul8M1P6W8lqzycWNancR5k/hUYigK7P
-      ywIDAQAB
-      -----END PRIVATE KEY-----
-      """
-
-      assert_raise(RuntimeError, fn ->
-        Config.validate_and_persist([{:private_key, public_rsa_pem} | opts])
-      end).message =~ "Bad private key. Threw error: "
     end
 
     test "validates invalid consent_redirect_url" do
