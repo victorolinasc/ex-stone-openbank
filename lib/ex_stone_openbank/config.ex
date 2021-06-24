@@ -71,7 +71,7 @@ defmodule ExStoneOpenbank.Config do
     if sandbox?(name) do
       "https://sandbox-accounts.openbank.stone.com.br"
     else
-      "https://accounts.openbank.stone.com.br/"
+      "https://accounts.openbank.stone.com.br"
     end
   end
 
