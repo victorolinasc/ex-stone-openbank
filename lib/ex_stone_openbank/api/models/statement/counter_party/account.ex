@@ -1,4 +1,4 @@
-defmodule ExStoneOpenbank.API.Model.Account do
+defmodule ExStoneOpenbank.API.Model.Statement.CounterParty.Account do
   @moduledoc """
   An account representation
   """

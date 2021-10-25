@@ -3,7 +3,8 @@ defmodule ExStoneOpenbank.API.Model.StatementEntry do
   StatementEntry model
   """
   use ExStoneOpenbank.Model
-  alias ExStoneOpenbank.API.Model.CounterParty
+
+  alias ExStoneOpenbank.API.Model.Statement.CounterParty
 
   @fields [
     :amount,

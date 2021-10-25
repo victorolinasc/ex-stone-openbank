@@ -1,11 +1,11 @@
-defmodule ExStoneOpenbank.API.Model.CounterParty do
+defmodule ExStoneOpenbank.API.Model.Statement.CounterParty do
   @moduledoc """
   Counter party model
   """
 
   use ExStoneOpenbank.Model
 
-  alias ExStoneOpenbank.API.Model.{Account, Entity}
+  alias ExStoneOpenbank.API.Model.Statement.CounterParty.{Account, Entity}
 
   embedded_schema do
     embeds_one :account, Account

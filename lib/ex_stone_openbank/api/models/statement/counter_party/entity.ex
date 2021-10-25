@@ -1,4 +1,4 @@
-defmodule ExStoneOpenbank.API.Model.Entity do
+defmodule ExStoneOpenbank.API.Model.Statement.CounterParty.Entity do
   @moduledoc """
   A legal entity that can be either a user or an organization.
   """
