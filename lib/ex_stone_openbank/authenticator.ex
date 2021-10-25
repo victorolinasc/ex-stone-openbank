@@ -14,6 +14,8 @@ defmodule ExStoneOpenbank.Authenticator do
   alias ExStoneOpenbank.Config
   alias ExStoneOpenbank.HTTP
 
+  require Logger
+
   # milliseconds to avoid re-fetching the token in case another process tried to request it before
   # the login finished
   @skew_time Application.get_env(:ex_stone_openbank, :time_skew, 2_000)
@@ -120,6 +122,10 @@ defmodule ExStoneOpenbank.Authenticator do
       tokens = %{access_token: access, refresh_token: refresh}
       :ets.insert(name, {:tokens, tokens})
       {:ok, tokens}
+    else
+      error ->
+        Logger.error("authenticate fail=#{inspect(error)}")
+        raise "failed to authenticate"
     end
   end
 
