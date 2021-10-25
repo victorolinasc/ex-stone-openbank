@@ -128,6 +128,7 @@ defmodule ExStoneOpenbank.Authenticator do
       %{
         "clientId" => opts.client_id,
         "sub" => opts.client_id,
+        "iss" => opts.client_id,
         "aud" => Config.accounts_url(name) <> "/auth/realms/stone_bank"
       },
       opts.signer
