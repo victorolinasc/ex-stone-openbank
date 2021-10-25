@@ -4,7 +4,7 @@ defmodule ExStoneOpenbank.API.Model.TransferResponse do
   """
   use ExStoneOpenbank.Model
 
-  alias ExStoneOpenbank.API.Model.TransferTarget
+  alias ExStoneOpenbank.API.Model.Transfer.Target
 
   @fields [
     :amount,
@@ -52,7 +52,7 @@ defmodule ExStoneOpenbank.API.Model.TransferResponse do
     field :scheduled_to_effective, :date
     field :scheduled_to_requested, :string
     field :status, :string
-    embeds_one :target, TransferTarget
+    embeds_one :target, Target
   end
 
   @doc false

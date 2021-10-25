@@ -1,4 +1,4 @@
-defmodule ExStoneOpenbank.API.Model.TransferEntity do
+defmodule ExStoneOpenbank.API.Model.Transfer.Target.Entity do
   @moduledoc """
   Account model
   """

@@ -1,17 +1,17 @@
-defmodule ExStoneOpenbank.API.Model.TransferTarget do
+defmodule ExStoneOpenbank.API.Model.Transfer.Target do
   @moduledoc """
   Target of a transfer.
   """
   use ExStoneOpenbank.Model
 
-  alias ExStoneOpenbank.API.Model.{TransferAccount, TransferEntity}
+  alias ExStoneOpenbank.API.Model.Transfer.Target.{Account, Entity}
 
   @fields []
   @optional []
 
   embedded_schema do
-    embeds_one :account, TransferAccount
-    embeds_one :entity, TransferEntity
+    embeds_one :account, Account
+    embeds_one :entity, Entity
   end
 
   @doc false
