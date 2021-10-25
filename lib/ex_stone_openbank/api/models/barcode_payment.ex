@@ -3,7 +3,7 @@ defmodule ExStoneOpenbank.API.Model.BarcodePaymentResponse do
   Response of a successful barcode payment (or a barcode payment dry run)
   """
   use ExStoneOpenbank.Model
-  alias ExStoneOpenbank.API.Model.BarcodePaymentDetails
+  alias ExStoneOpenbank.API.Model.BarcodePayment.Details
 
   @fields [
     :account_id,
@@ -56,7 +56,7 @@ defmodule ExStoneOpenbank.API.Model.BarcodePaymentResponse do
     field :status, :string
     field :writable_line, :string
 
-    embeds_one :details, BarcodePaymentDetails
+    embeds_one :details, Details
   end
 
   @doc false

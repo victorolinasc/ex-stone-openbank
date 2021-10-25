@@ -1,4 +1,4 @@
-defmodule ExStoneOpenbank.API.Model.BarcodePaymentDetails do
+defmodule ExStoneOpenbank.API.Model.BarcodePayment.Details do
   @moduledoc """
   Details about the barcode payment
   """
