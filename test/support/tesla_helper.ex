@@ -71,6 +71,6 @@ defmodule ExStoneOpenbank.TeslaHelper do
 
     if response,
       do: response,
-      else: json_response(%{access_token: "token", refresh_token: "refresh_token"})
+      else: json_response(%{access_token: "token"})
   end
 end

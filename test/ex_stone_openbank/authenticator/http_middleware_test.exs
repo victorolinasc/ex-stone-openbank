@@ -29,11 +29,11 @@ defmodule ExStoneOpenbank.Authenticator.AuthHTTPMiddlewareTest do
           # To know if this is the first time we check if already have tokens
           case Authenticator.access_token(ctx.opts[:name]) do
             {:ok, "token"} ->
-              response = json_response(%{access_token: "new_token", refresh_token: "new_refresh"})
+              response = json_response(%{access_token: "new_token"})
               assert_authentication(ctx.opts[:client_id], response, env)
 
             {:error, :unauthenticated} ->
-              response = json_response(%{access_token: "token", refresh_token: "refresh"})
+              response = json_response(%{access_token: "token"})
               assert_authentication(ctx.opts[:client_id], response, env)
           end
 

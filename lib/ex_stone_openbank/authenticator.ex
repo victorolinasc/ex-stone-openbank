@@ -112,14 +112,13 @@ defmodule ExStoneOpenbank.Authenticator do
   Authenticates with Stone Openbank API using the given signer and client_id
   """
   @spec authenticate(name :: atom()) ::
-          {:ok, %{access_token: token :: String.t(), refresh_token: token :: String.t()}}
+          {:ok, %{access_token: token :: String.t()}}
           | {:error, reason :: atom()}
   def authenticate(name) do
     with opts <- Config.options(name),
          {:ok, token, _claims} <- generate_client_credentials_token(name, opts),
-         {:ok, %{"access_token" => access, "refresh_token" => refresh}} <-
-           do_login(name, opts, token) do
-      tokens = %{access_token: access, refresh_token: refresh}
+         {:ok, %{"access_token" => access}} <- do_login(name, opts, token) do
+      tokens = %{access_token: access}
       :ets.insert(name, {:tokens, tokens})
       {:ok, tokens}
     else
