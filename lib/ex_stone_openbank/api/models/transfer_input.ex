@@ -4,7 +4,7 @@ defmodule ExStoneOpenbank.API.Model.TransferInput do
   """
   use ExStoneOpenbank.Model
 
-  alias ExStoneOpenbank.API.Model.TransferTarget
+  alias ExStoneOpenbank.API.Model.Transfer.Target
 
   @fields [:amount, :account_id]
   @optional [:description, :scheduled_to]
@@ -18,7 +18,7 @@ defmodule ExStoneOpenbank.API.Model.TransferInput do
 
     field :type, :string, virtual: true
 
-    embeds_one :target, TransferTarget
+    embeds_one :target, Target
   end
 
   @doc false
