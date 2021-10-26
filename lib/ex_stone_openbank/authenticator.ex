@@ -14,6 +14,8 @@ defmodule ExStoneOpenbank.Authenticator do
   alias ExStoneOpenbank.Config
   alias ExStoneOpenbank.HTTP
 
+  require Logger
+
   # milliseconds to avoid re-fetching the token in case another process tried to request it before
   # the login finished
   @skew_time Application.get_env(:ex_stone_openbank, :time_skew, 2_000)
@@ -110,16 +112,19 @@ defmodule ExStoneOpenbank.Authenticator do
   Authenticates with Stone Openbank API using the given signer and client_id
   """
   @spec authenticate(name :: atom()) ::
-          {:ok, %{access_token: token :: String.t(), refresh_token: token :: String.t()}}
+          {:ok, %{access_token: token :: String.t()}}
           | {:error, reason :: atom()}
   def authenticate(name) do
     with opts <- Config.options(name),
          {:ok, token, _claims} <- generate_client_credentials_token(name, opts),
-         {:ok, %{"access_token" => access, "refresh_token" => refresh}} <-
-           do_login(name, opts, token) do
-      tokens = %{access_token: access, refresh_token: refresh}
+         {:ok, %{"access_token" => access}} <- do_login(name, opts, token) do
+      tokens = %{access_token: access}
       :ets.insert(name, {:tokens, tokens})
       {:ok, tokens}
+    else
+      error ->
+        Logger.error("authenticate fail=#{inspect(error)}")
+        raise "failed to authenticate"
     end
   end
 
@@ -128,6 +133,7 @@ defmodule ExStoneOpenbank.Authenticator do
       %{
         "clientId" => opts.client_id,
         "sub" => opts.client_id,
+        "iss" => opts.client_id,
         "aud" => Config.accounts_url(name) <> "/auth/realms/stone_bank"
       },
       opts.signer

@@ -11,8 +11,7 @@ defmodule ExStoneOpenbank.AuthenticatorTest do
     test "tries authentication upon start", ctx do
       # started on setup block
       assert Authenticator.tokens(ctx.opts[:name]) == %{
-               access_token: "token",
-               refresh_token: "refresh_token"
+               access_token: "token"
              }
     end
   end
@@ -20,8 +19,7 @@ defmodule ExStoneOpenbank.AuthenticatorTest do
   describe "handle_call/3 - :refresh_token" do
     test "do not re-authenticate if it did not pass time skew", ctx do
       assert Authenticator.refresh_token(ctx.opts[:name]) == %{
-               access_token: "token",
-               refresh_token: "refresh_token"
+               access_token: "token"
              }
     end
 
@@ -30,12 +28,11 @@ defmodule ExStoneOpenbank.AuthenticatorTest do
 
       expect_authentication(
         ctx.opts[:client_id],
-        json_response(%{access_token: "new_token", refresh_token: "new_refresh_token"})
+        json_response(%{access_token: "new_token"})
       )
 
       assert Authenticator.refresh_token(ctx.opts[:name]) == %{
-               access_token: "new_token",
-               refresh_token: "new_refresh_token"
+               access_token: "new_token"
              }
     end
   end
