@@ -1,8 +1,8 @@
 defmodule ExStoneOpenbank.API.PixPayment do
-  @moduledoc """
-  """
-  alias ExStoneOpenbank.API.Model.PixPayment.{CreationInput, CreationResponse, ConfirmationInput}
+  @moduledoc false
+
   alias ExStoneOpenbank.{HTTP, Model}
+  alias ExStoneOpenbank.API.Model.PixPayment.{ConfirmationInput, CreationInput, CreationResponse}
 
   @base_url "/pix/outbound_pix_payments"
 
