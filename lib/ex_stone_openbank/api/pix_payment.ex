@@ -41,6 +41,8 @@ defmodule ExStoneOpenbank.API.PixPayment do
         }
       })
   """
+  @spec create(config_name :: atom(), input :: map()) ::
+          {:ok, CreationResponse.t()} | {:error, atom()}
   def create(config_name, input) do
     case CreationInput.cast_and_apply(input) do
       %CreationInput{} = input ->
@@ -73,6 +75,8 @@ defmodule ExStoneOpenbank.API.PixPayment do
         idempotency_key: "<<key>>"
       })
   """
+  @spec confirm(config_name :: atom(), input :: map()) ::
+          {:ok, any()} | {:error, atom()}
   def confirm(config_name, input) do
     case ConfirmationInput.cast_and_apply(input) do
       %ConfirmationInput{} = input ->

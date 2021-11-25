@@ -24,6 +24,8 @@ defmodule ExStoneOpenbank.API.PixResources do
         idempotency_key: "<<key>>"
       })
   """
+  @spec dynamic_invoice(config_name :: atom(), input :: map()) ::
+          {:ok, DynamicInvoiceResponse.t()} | {:error, atom()}
   def dynamic_invoice(config_name, input) do
     case DynamicInvoiceInput.cast_and_apply(input) do
       %DynamicInvoiceInput{} = input ->
