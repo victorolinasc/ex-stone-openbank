@@ -17,7 +17,7 @@ defmodule ExStoneOpenbank.API.ResourcesTest do
         json_response(%{data: [], cursor: %{}})
       end)
 
-      assert {:ok, %Page{} = page} = Resources.list(ctx.opts[:name])
+      assert {:ok, %Page{}} = Resources.list(ctx.opts[:name])
     end
   end
 end

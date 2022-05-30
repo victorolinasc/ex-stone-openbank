@@ -76,6 +76,24 @@ defmodule ExStoneOpenbank.Config do
   end
 
   @doc """
+  The Conta URL for the given configuration name.
+
+  It's either:
+    - https://sandbox.conta.stone.com.br
+    - https://conta.stone.com.br
+
+  depending if its a sandbox application or production.
+  """
+  @spec conta_url(config_name :: atom()) :: String.t()
+  def conta_url(name) when is_atom(name) do
+    if sandbox?(name) do
+      "https://sandbox.conta.stone.com.br"
+    else
+      "https://conta.stone.com.br"
+    end
+  end
+
+  @doc """
   The API URL for the given configuration name.
 
   It's either:

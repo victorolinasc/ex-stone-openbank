@@ -12,7 +12,13 @@ defmodule ExStoneOpenbank.Case do
       setup :verify_on_exit!
 
       def set_test_client(_context \\ %{}) do
-        opts = [name: :test, client_id: "example_id", private_key: pem()]
+        opts = [
+          name: :test,
+          client_id: "example_id",
+          private_key: pem(),
+          consent_redirect_url: "http://consent_test"
+        ]
+
         {:ok, opts: opts}
       end
 
