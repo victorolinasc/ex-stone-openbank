@@ -14,7 +14,7 @@ defmodule ExStoneOpenbank.Consents do
 
     @impl true
     def token_config do
-      [skip: [:iss], aud: "accounts-hubid@openbank.stone.com.br"]
+      [skip: [:iss], aud: "abc_web@openbank.stone.com.br"]
       |> default_claims()
       |> add_claim("type", fn -> "consent" end)
     end
@@ -47,7 +47,7 @@ defmodule ExStoneOpenbank.Consents do
       }
       |> URI.encode_query()
 
-    link = config_name |> Config.accounts_url() |> URI.parse()
+    link = config_name |> Config.conta_url() |> URI.parse()
 
     %{link | query: query, path: "/consentimento"} |> URI.to_string()
   end

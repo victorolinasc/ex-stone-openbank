@@ -11,7 +11,7 @@ defmodule ExStoneOpenbank.MixProject do
       name: "ExStoneOpenbank",
       version: @version,
       description: @description,
-      elixir: "~> 1.9",
+      elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
