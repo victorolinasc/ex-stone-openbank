@@ -5,26 +5,32 @@ defmodule ExStoneOpenbank.Config do
 
   alias ExStoneOpenbank.URLProvider
 
-  @doc """
-  Validates given configuration and persists it during boot.
-  """
-  @spec validate_and_persist(opts :: Keyword.t()) :: %{
+  @typep config :: %{
           name: atom(),
           client_id: String.t(),
           signer: Joken.Signer.t(),
           sandbox?: boolean()
         }
+
+  @doc """
+  Validates given configuration and persists it during boot.
+  """
+  @spec validate_and_persist(opts :: Keyword.t()) :: config()
   def validate_and_persist(opts) do
-    config =
-      opts
-      |> Keyword.put_new(:sandbox?, false)
-      |> Enum.map(fn {key, value} -> validate(key, value) end)
-      |> Map.new()
-      |> build_url_provider()
+    config = validate(opts)
 
     :persistent_term.put({__MODULE__, config.name}, config)
 
     config
+  end
+
+  @spec validate(opts :: Keyword.t()) :: config()
+  def validate(opts) do
+    opts
+    |> Keyword.put_new(:sandbox?, false)
+    |> Enum.map(fn {key, value} -> validate(key, value) end)
+    |> Map.new()
+    |> build_url_provider()
   end
 
   defp build_url_provider(config) when is_map_key(config, :url_provider),
