@@ -8,10 +8,7 @@ defmodule ExStoneOpenbank.Webhooks.StoneJWKS do
 
   @doc false
   def init_opts(opts) do
-    url =
-      if Keyword.get(opts, :sandbox?, false),
-        do: Config.sandbox_api_url(),
-        else: Config.prod_api_url()
+    url = Config.api_url(opts[:name])
 
     Keyword.merge(opts,
       jwks_url: "#{url}/api/v1/discovery/keys",
