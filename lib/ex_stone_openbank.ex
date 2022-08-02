@@ -44,7 +44,7 @@ defmodule ExStoneOpenbank do
 
         def start(_type, _args) do
           children = [
-            # important JWKS for webhooks! It will gets de url provider accordingly
+            # important JWKS for webhooks! It will gets de url provider according
             # to :sandbox? key from the config. Unless you provide :url_provider.
             {ExStoneOpenbank.Webhooks.StoneJWKS, stone_bank()},
             # Your application authenticator
