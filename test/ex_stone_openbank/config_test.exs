@@ -83,5 +83,13 @@ defmodule ExStoneOpenbank.ConfigTest do
         Config.validate_and_persist([{:consent_redirect_url, "Not a valid URL"} | opts])
       end
     end
+
+    test "validates invalid url_provider" do
+      opts = [name: :some, client_id: "some id"]
+
+      assert_raise RuntimeError, "`:url_provider` must be an ExStoneOpenbank.URLProvider", fn ->
+        Config.validate_and_persist([{:url_provider, %{}} | opts])
+      end
+    end
   end
 end
