@@ -23,7 +23,13 @@ defmodule ExStoneOpenbank.HTTP do
           | :unexpected_return
 
   @typep body ::
-           %{required(String.t()) => body()} | list(body()) | number() | boolean() | String.t()
+           %{required(String.t()) => body()}
+           | list(body())
+           | number()
+           | boolean()
+           | String.t()
+           | map()
+           | struct()
   @typep parsed_return :: {:ok, body} | {:error, error_reason}
 
   defguardp is_client_error(status) when is_integer(status) and status >= 400 and status < 500
