@@ -11,7 +11,7 @@ defmodule ExStoneOpenbank.MixProject do
       name: "ExStoneOpenbank",
       version: @version,
       description: @description,
-      elixir: "~> 1.11",
+      elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
@@ -35,20 +35,20 @@ defmodule ExStoneOpenbank.MixProject do
 
   defp deps do
     [
-      {:brcpfcnpj, "~> 0.2"},
-      {:jason, "~> 1.1"},
-      {:tesla, "~> 1.3"},
-      {:hackney, "~> 1.15"},
-      {:joken, "~> 2.2"},
-      {:joken_jwks, "~> 1.1"},
-      {:ecto, "~> 3.4"},
-      {:telemetry, "~> 0.4"},
+      {:brcpfcnpj, "~> 1.0"},
+      {:jason, "~> 1.4"},
+      {:tesla, "~> 1.5"},
+      {:hackney, "~> 1.18"},
+      {:joken, "~> 2.5"},
+      {:joken_jwks, "~> 1.6"},
+      {:ecto, "~> 3.9"},
+      {:telemetry, "~> 1.1"},
 
       # Test, dev only deps
-      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
-      {:junit_formatter, "~> 3.0", only: :test},
-      {:mox, "~> 0.5", only: :test},
+      {:junit_formatter, "~> 3.3", only: :test},
+      {:mox, "~> 1.0", only: :test},
       {:excoveralls, "~> 0.12", only: :test}
     ]
   end
